@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreTodoRequest;
 use App\Http\Requests\UpdateTodoRequest;
+use Illuminate\Http\Request;
 use App\Models\Todo;
 use App\Repositories\TodoRepository;
 
@@ -16,17 +17,13 @@ class TodoController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        return 123;
-    }
+        [$filters, $currentPage, $rowsPerPage] = extractQueryFilters($request, ['title', 'completed']);
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        $paginatedTodos = $this->todoRepository->filter($filters)->paginate($rowsPerPage);
+
+        return successResponse('Todo lists!', paginatedResponse($paginatedTodos, $rowsPerPage));
     }
 
     /**
@@ -34,23 +31,9 @@ class TodoController extends Controller
      */
     public function store(StoreTodoRequest $request)
     {
-        //
-    }
+        $todo = $this->todoRepository->create($request->validated());
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Todo $todo)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Todo $todo)
-    {
-        //
+        return successResponse("Todo with title of $todo->title successfully added!");
     }
 
     /**
@@ -58,7 +41,9 @@ class TodoController extends Controller
      */
     public function update(UpdateTodoRequest $request, Todo $todo)
     {
-        //
+        $this->todoRepository->update($todo->id, $request->validated());
+
+        return successResponse("Todo with title of $todo->title successfully updated!");
     }
 
     /**
@@ -66,6 +51,8 @@ class TodoController extends Controller
      */
     public function destroy(Todo $todo)
     {
-        //
+        $this->todoRepository->delete($todo->id);
+
+        return successResponse("Todo with title of $todo->title successfully deleted!");
     }
 }
