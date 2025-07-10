@@ -20,7 +20,7 @@
 
 ✅ How to Verify if the Application is Running
 1. Open Postman and click the Import button in the top-left corner.
-2. Select the Link tab, then paste the collection link sent via email since Github won't allow us to write link with secret key.
+2. Select the Link tab, then paste the collection link https://api.postman.com/collections/15758258-31c0f49c-a42e-4c66-a6ef-633bf7e59465?access_key=PMAT-01JZS34GXQK14B2389T0J0E4JM
 3. Import the collection
 4. Use the /todos API endpoint from the imported collection to fetch the todo list.
     - If you receive a list of todos, your project setup is successful!
