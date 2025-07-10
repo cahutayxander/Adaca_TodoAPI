@@ -19,9 +19,9 @@ class TodoController extends Controller
      */
     public function index(Request $request)
     {
-        [$filters, $currentPage, $rowsPerPage] = extractQueryFilters($request, ['title', 'completed']);
+        [$filters, $rowsPerPage, $paginate] = extractQueryFilters($request, ['title', 'completed']);
 
-        $paginatedTodos = $this->todoRepository->filter($filters)->paginate($rowsPerPage);
+        $paginatedTodos = $this->todoRepository->filter($filters)->paginate(...$paginate);
 
         return successResponse('Todo lists!', paginatedResponse($paginatedTodos, $rowsPerPage));
     }

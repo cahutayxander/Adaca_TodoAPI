@@ -21,7 +21,11 @@ if (! function_exists('extractQueryFilters')) {
         $currentPage = (int) $request->query('current_page', 1);
         $rowsPerPage = (int) $request->query('rows_per_page', 15);
 
-        return [$filters, $currentPage, $rowsPerPage];
+        return [
+            $filters,
+            $rowsPerPage,
+            [$rowsPerPage, ['*'], 'page', $currentPage],
+        ];
     }
 }
 
